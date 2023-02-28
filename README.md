@@ -1,8 +1,9 @@
 # BERT NER
 
 Use google BERT to do CoNLL-2003 NER !
+Updated from pytorch-transformers to the more up-to-date transformers package.
 
-![new](https://i.imgur.com/OB4Ugp4.png) Train model using Python and Inference using C++
+![C++](https://i.imgur.com/OB4Ugp4.png) Train model using Python and Inference using C++
 
 [ALBERT-TF2.0](https://github.com/kamalkraj/ALBERT-TF2.0)
 
