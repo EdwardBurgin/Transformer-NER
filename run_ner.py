@@ -11,9 +11,12 @@ import sys
 import numpy as np
 import torch
 import torch.nn.functional as F
-from pytorch_transformers import (WEIGHTS_NAME, AdamW, BertConfig,
-                                  BertForTokenClassification, BertTokenizer,
-                                  WarmupLinearSchedule)
+from transformers import BertForTokenClassification, AdamW, BertConfig, BertTokenizer
+from transformers.optimization import get_linear_schedule_with_warmup
+# from transformers import AutoTokenizer, AutoModelForTokenClassification
+# from pytorch_transformers import (WEIGHTS_NAME, AdamW, BertConfig,
+#                                   BertForTokenClassification, BertTokenizer,
+#                                   WarmupLinearSchedule)
 from torch import nn
 from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
                               TensorDataset)
@@ -438,7 +441,11 @@ def main():
         ]
     warmup_steps = int(args.warmup_proportion * num_train_optimization_steps)
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=warmup_steps, t_total=num_train_optimization_steps)
+    scheduler = get_linear_schedule_with_warmup(
+        optimizer, num_warmup_steps=warmup_steps,
+        num_training_steps=num_train_optimization_steps
+    )
+    # scheduler = WarmupLinearSchedule(optimizer, warmup_steps=warmup_steps, t_total=num_train_optimization_steps)
     if args.fp16:
         try:
             from apex import amp
